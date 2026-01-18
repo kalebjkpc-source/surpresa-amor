@@ -4,133 +4,152 @@
 <meta charset="UTF-8">
 <title>Uma surpresa para minha amada ❤️</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #ff758c, #ff7eb3);
-    color: #fff;
-    text-align: center;
-    padding: 20px;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: #fff;
 }
 
-.container {
-    max-width: 400px;
-    margin: auto;
-    background: rgba(255,255,255,0.15);
-    padding: 25px;
-    border-radius: 20px;
+.card {
+  background: rgba(255,255,255,0.2);
+  padding: 25px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 360px;
+  text-align: center;
 }
 
 input, button {
-    padding: 12px;
-    font-size: 16px;
-    border-radius: 10px;
-    border: none;
-    width: 100%;
-    margin-top: 10px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  font-size: 16px;
+  margin-top: 10px;
 }
 
 button {
-    background: #fff;
-    color: #ff4f81;
-    font-weight: bold;
-    cursor: pointer;
+  background: #fff;
+  color: #ff4f81;
+  font-weight: bold;
+  cursor: pointer;
 }
 
-#wheelContainer {
-    display: none;
+#wheelArea {
+  display: none;
+}
+
+.wheel-container {
+  position: relative;
+  width: 260px;
+  height: 260px;
+  margin: 20px auto;
 }
 
 #wheel {
-    width: 260px;
-    height: 260px;
-    border-radius: 50%;
-    border: 8px solid #fff;
-    margin: 20px auto;
-    position: relative;
-    transition: transform 4s ease-out;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 8px solid #fff;
+  background: conic-gradient(
+    #ffb6c1 0deg 90deg,
+    #ffd1dc 90deg 180deg,
+    #c1e1c1 180deg 270deg,
+    #d1c4e9 270deg 360deg
+  );
+  transition: transform 4s cubic-bezier(.17,.67,.29,1.02);
 }
 
-.segment {
-    position: absolute;
-    width: 50%;
-    height: 50%;
-    background: transparent;
-    transform-origin: 100% 100%;
+.pointer {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 20px solid white;
 }
 
 #result {
-    font-size: 20px;
-    margin-top: 15px;
-    font-weight: bold;
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: bold;
 }
 </style>
 </head>
+
 <body>
 
-<div class="container" id="login">
-    <h2>🔒 Área secreta</h2>
-    <p>Digite nossa data de namoro ❤️</p>
-    <input type="password" id="password" placeholder="DD/MM/AAAA">
-    <button onclick="checkPassword()">Entrar</button>
-    <p id="error"></p>
+<div class="card" id="login">
+  <h2>🔒 Área secreta</h2>
+  <p>Digite nossa data de namoro ❤️</p>
+  <input type="password" id="password" placeholder="12/06/2018">
+  <button onclick="checkPassword()">Entrar</button>
+  <p id="error"></p>
 </div>
 
-<div class="container" id="wheelContainer">
-    <h2>🎁 Uma surpresa para minha amada</h2>
+<div class="card" id="wheelArea">
+  <h2>🎁 Uma surpresa para minha amada</h2>
 
+  <div class="wheel-container">
+    <div class="pointer"></div>
     <div id="wheel"></div>
+  </div>
 
-    <button onclick="spin()">Girar a roleta</button>
-
-    <div id="result"></div>
+  <button onclick="spin()">Girar a roleta</button>
+  <div id="result"></div>
 </div>
 
 <script>
 const correctPassword = "12/06/2018";
 const prizes = [
-    "🏩 Motel",
-    "💅 Vale unha e pés",
-    "🌿 Piquenique no parque",
-    "🍀 Vale da sorte (eu faço tudo o que você quiser por um dia!)"
+  "🏩 Motel",
+  "💅 Vale unha e pés",
+  "🌿 Piquenique no parque",
+  "🍀 Vale da sorte (você escolhe tudo por um dia!)"
 ];
 
-const wheel = document.getElementById("wheel");
+let spinning = false;
 
 function checkPassword() {
-    const pass = document.getElementById("password").value;
-    if (pass === correctPassword) {
-        document.getElementById("login").style.display = "none";
-        document.getElementById("wheelContainer").style.display = "block";
-        createWheel();
-    } else {
-        document.getElementById("error").innerText = "Senha incorreta 😢";
-    }
-}
-
-function createWheel() {
-    wheel.innerHTML = "";
-    const colors = ["#ff9a9e", "#fad0c4", "#fbc2eb", "#a18cd1"];
-    prizes.forEach((prize, index) => {
-        const segment = document.createElement("div");
-        segment.className = "segment";
-        segment.style.transform = `rotate(${index * 90}deg)`;
-        segment.style.background = colors[index];
-        wheel.appendChild(segment);
-    });
+  const pass = document.getElementById("password").value;
+  if (pass === correctPassword) {
+    document.getElementById("login").style.display = "none";
+    document.getElementById("wheelArea").style.display = "block";
+  } else {
+    document.getElementById("error").innerText = "Senha incorreta 😢";
+  }
 }
 
 function spin() {
-    const randomDeg = Math.floor(3600 + Math.random() * 360);
-    wheel.style.transform = `rotate(${randomDeg}deg)`;
+  if (spinning) return;
+  spinning = true;
 
-    setTimeout(() => {
-        const selected = prizes[Math.floor(Math.random() * prizes.length)];
-        document.getElementById("result").innerText = "💖 Resultado: " + selected;
-    }, 4000);
+  const wheel = document.getElementById("wheel");
+  const deg = 3600 + Math.floor(Math.random() * 360);
+  wheel.style.transform = `rotate(${deg}deg)`;
+
+  const prizeIndex = Math.floor(((360 - (deg % 360)) / 90)) % 4;
+
+  setTimeout(() => {
+    document.getElementById("result").innerText =
+      "💖 Resultado: " + prizes[prizeIndex];
+    spinning = false;
+  }, 4000);
 }
 </script>
 
 </body>
-  </html>
+</html>
+
+
 
