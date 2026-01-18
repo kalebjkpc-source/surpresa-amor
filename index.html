@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Uma surpresa para minha amada ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+}
+
+.container {
+    max-width: 400px;
+    margin: auto;
+    background: rgba(255,255,255,0.15);
+    padding: 25px;
+    border-radius: 20px;
+}
+
+input, button {
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: none;
+    width: 100%;
+    margin-top: 10px;
+}
+
+button {
+    background: #fff;
+    color: #ff4f81;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#wheelContainer {
+    display: none;
+}
+
+#wheel {
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    border: 8px solid #fff;
+    margin: 20px auto;
+    position: relative;
+    transition: transform 4s ease-out;
+}
+
+.segment {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    background: transparent;
+    transform-origin: 100% 100%;
+}
+
+#result {
+    font-size: 20px;
+    margin-top: 15px;
+    font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<div class="container" id="login">
+    <h2>🔒 Área secreta</h2>
+    <p>Digite nossa data de namoro ❤️</p>
+    <input type="password" id="password" placeholder="DD/MM/AAAA">
+    <button onclick="checkPassword()">Entrar</button>
+    <p id="error"></p>
+</div>
+
+<div class="container" id="wheelContainer">
+    <h2>🎁 Uma surpresa para minha amada</h2>
+
+    <div id="wheel"></div>
+
+    <button onclick="spin()">Girar a roleta</button>
+
+    <div id="result"></div>
+</div>
+
+<script>
+const correctPassword = "12/06/2018";
+const prizes = [
+    "🏩 Motel",
+    "💅 Vale unha e pés",
+    "🌿 Piquenique no parque",
+    "🍀 Vale da sorte (eu faço tudo o que você quiser por um dia!)"
+];
+
+const wheel = document.getElementById("wheel");
+
+function checkPassword() {
+    const pass = document.getElementById("password").value;
+    if (pass === correctPassword) {
+        document.getElementById("login").style.display = "none";
+        document.getElementById("wheelContainer").style.display = "block";
+        createWheel();
+    } else {
+        document.getElementById("error").innerText = "Senha incorreta 😢";
+    }
+}
+
+function createWheel() {
+    wheel.innerHTML = "";
+    const colors = ["#ff9a9e", "#fad0c4", "#fbc2eb", "#a18cd1"];
+    prizes.forEach((prize, index) => {
+        const segment = document.createElement("div");
+        segment.className = "segment";
+        segment.style.transform = `rotate(${index * 90}deg)`;
+        segment.style.background = colors[index];
+        wheel.appendChild(segment);
+    });
+}
+
+function spin() {
+    const randomDeg = Math.floor(3600 + Math.random() * 360);
+    wheel.style.transform = `rotate(${randomDeg}deg)`;
+
+    setTimeout(() => {
+        const selected = prizes[Math.floor(Math.random() * prizes.length)];
+        document.getElementById("result").innerText = "💖 Resultado: " + selected;
+    }, 4000);
+}
+</script>
+
+</body>
+  </html>
+
