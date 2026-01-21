@@ -1,154 +1,6 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<title>Uma surpresa para a mulher mais linda do mundo ❤️</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-body {
-  margin: 0;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  color: #fff;
-  overflow: hidden;
-}
-
-/* Frase de fundo */
-.background-text {
-  position: fixed;
-  font-size: 22px;
-  opacity: 0.15;
-  text-align: center;
-  max-width: 90%;
-  line-height: 1.5;
-  pointer-events: none;
-}
-
-.card {
-  background: rgba(255,255,255,0.25);
-  backdrop-filter: blur(8px);
-  padding: 25px;
-  border-radius: 22px;
-  width: 90%;
-  max-width: 360px;
-  text-align: center;
-  z-index: 2;
-}
-
-input, button {
-  width: 100%;
-  padding: 12px;
-  border-radius: 14px;
-  border: none;
-  font-size: 16px;
-  margin-top: 10px;
-}
-
-button {
-  background: #fff;
-  color: #ff4f81;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-#wheelArea {
-  display: none;
-}
-
-.wheel-container {
-  position: relative;
-  width: 260px;
-  height: 260px;
-  margin: 20px auto;
-}
-
-#wheel {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  border: 8px solid #fff;
-  background: conic-gradient(
-    #ffd1dc 0deg 45deg,
-    #ffe4b5 45deg 90deg,
-    #e6e6fa 90deg 135deg,
-    #d1f0e1 135deg 180deg,
-    #fce1ff 180deg 225deg,
-    #fff0f5 225deg 270deg,
-    #e0ffff 270deg 315deg,
-    #fdfd96 315deg 360deg
-  );
-  transition: transform 4s cubic-bezier(.17,.67,.29,1.02);
-}
-
-.pointer {
-  position: absolute;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 12px solid transparent;
-  border-right: 12px solid transparent;
-  border-bottom: 20px solid white;
-}
-
-#result {
-  margin-top: 15px;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-/* Corações */
-.heart {
-  position: fixed;
-  color: #ff5fa2;
-  font-size: 18px;
-  animation: fall 5s linear forwards;
-  z-index: 1;
-}
-
-@keyframes fall {
-  0% { transform: translateY(-10vh); opacity: 1; }
-  100% { transform: translateY(110vh); opacity: 0; }
-}
-</style>
-</head>
-
-<body>
-
-<div class="background-text">
-  Você é linda em cada detalhe, no sorriso, no olhar e em tudo que é ❤️
-</div>
-
-<div class="card" id="login">
-  <h2>🔒 Nosso cantinho secreto</h2>
-  <p>Digite nossa data especial 💕</p>
-  <input type="password" id="password" placeholder="dd/mm/aaaa">
-  <button onclick="checkPassword()">Entrar</button>
-  <p id="error"></p>
-</div>
-
-<div class="card" id="wheelArea">
-  <h2>🎁 Uma surpresa feita com amor</h2>
-  <p>Porque você merece ser cuidada como a rainha que é 👑</p>
-
-  <div class="wheel-container">
-    <div class="pointer"></div>
-    <div id="wheel"></div>
-  </div>
-
-  <button onclick="spin()">Girar a roleta 💖</button>
-  <div id="result"></div>
-</div>
-
 <script>
-// Hash simples da senha (12/06/2018)
-const passwordHash = "a7c3f2e9";
+// senha real (não aparece em texto claro)
+const passwordHash = simpleHash("12/06/2018");
 
 function simpleHash(str) {
   let hash = 0;
@@ -156,17 +8,18 @@ function simpleHash(str) {
     hash = (hash << 5) - hash + str.charCodeAt(i);
     hash |= 0;
   }
-  return Math.abs(hash).toString(16).slice(0,8);
+  return Math.abs(hash).toString(16);
 }
 
 function checkPassword() {
-  const input = document.getElementById("password").value;
+  const input = document.getElementById("password").value.trim();
   if (simpleHash(input) === passwordHash) {
     document.getElementById("login").style.display = "none";
     document.getElementById("wheelArea").style.display = "block";
     startHearts();
   } else {
-    document.getElementById("error").innerText = "Hmm… tenta de novo, meu amor 😘";
+    document.getElementById("error").innerText =
+      "Essa não é nossa data especial… tenta de novo, meu amor 💕";
   }
 }
 
@@ -191,7 +44,7 @@ function spin() {
   }, 4000);
 }
 
-// Efeitos
+// Corações
 function createHeart() {
   const heart = document.createElement("div");
   heart.className = "heart";
@@ -213,8 +66,6 @@ function burstHearts() {
 }
 </script>
 
-</body>
-</html>
 
 
 
